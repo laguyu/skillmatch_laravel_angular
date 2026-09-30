@@ -1,0 +1,110 @@
+<main class="my-jobs-page">
+	<header class="page-heading">
+		<div>
+			<p class="eyebrow">Área de reclutamiento</p>
+			<h1>Mis vacantes</h1>
+			<p>Publica oportunidades y consulta sus postulaciones.</p>
+		</div>
+	</header>
+
+	<div class="management-layout">
+		<section class="publish-section" aria-labelledby="publish-heading">
+			<h2 id="publish-heading">{{ editingJobId() === null ? 'Publicar vacante' : 'Editar vacante' }}</h2>
+			<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+				<label for="title">Puesto</label>
+				<input id="title" type="text" formControlName="title" maxlength="120" />
+				@if (form.controls.title.touched && form.controls.title.invalid) { <small role="alert">Escribe el nombre del puesto.</small> }
+
+				<label for="company">Empresa</label>
+				<input id="company" type="text" formControlName="company_name" maxlength="120" />
+				@if (form.controls.company_name.touched && form.controls.company_name.invalid) { <small role="alert">Escribe el nombre de la empresa.</small> }
+
+				<label for="location">Ubicación</label>
+				<input id="location" type="text" formControlName="location" maxlength="120" />
+				@if (form.controls.location.touched && form.controls.location.invalid) { <small role="alert">Indica la ubicación.</small> }
+
+				<div class="field-pair">
+					<div>
+						<label for="work-mode">Modalidad</label>
+						<select id="work-mode" formControlName="work_mode">
+							<option value="remote">Remoto</option>
+							<option value="hybrid">Híbrido</option>
+							<option value="onsite">Presencial</option>
+						</select>
+					</div>
+					<div>
+						<label for="employment-type">Tipo</label>
+						<select id="employment-type" formControlName="employment_type">
+							<option value="full_time">Tiempo completo</option>
+							<option value="part_time">Medio tiempo</option>
+							<option value="contract">Contrato</option>
+						</select>
+					</div>
+				</div>
+
+				<label for="description">Descripción</label>
+				<textarea id="description" formControlName="description" rows="6" maxlength="10000"></textarea>
+				@if (form.controls.description.touched && form.controls.description.hasError('required')) { <small role="alert">La descripción es obligatoria.</small> }
+				@if (form.controls.description.touched && form.controls.description.hasError('minlength')) { <small role="alert">Escribe al menos 80 caracteres.</small> }
+
+				<div class="field-pair">
+					<div><label for="salary-min">Salario mínimo <span>(opcional)</span></label><input id="salary-min" type="number" min="0" formControlName="salary_min" /></div>
+					<div><label for="salary-max">Salario máximo <span>(opcional)</span></label><input id="salary-max" type="number" min="0" formControlName="salary_max" /></div>
+				</div>
+				@if (salaryError()) { <small role="alert">{{ salaryError() }}</small> }
+				@if (formError()) { <p class="error-message" role="alert">{{ formError() }}</p> }
+				@if (successMessage()) { <p class="success-message" role="status">{{ successMessage() }}</p> }
+
+				<div class="form-actions">
+					<button class="publish-button" type="submit" [disabled]="isSubmitting()">
+						{{ isSubmitting() ? 'Guardando...' : editingJobId() === null ? 'Publicar vacante' : 'Guardar cambios' }}
+					</button>
+					@if (editingJobId() !== null) {
+						<button class="cancel-button" type="button" [disabled]="isSubmitting()" (click)="cancelEditing()">Cancelar edición</button>
+					}
+				</div>
+			</form>
+		</section>
+
+		<section class="owned-jobs-section" aria-labelledby="owned-jobs-heading">
+			<div class="list-heading">
+				<div><p class="eyebrow">Tu equipo</p><h2 id="owned-jobs-heading">Vacantes publicadas</h2></div>
+				<span>{{ jobs().length }}</span>
+			</div>
+			@if (actionMessage()) { <p class="success-message" role="status">{{ actionMessage() }}</p> }
+			@if (actionError()) { <p class="error-message" role="alert">{{ actionError() }}</p> }
+			@if (isLoading()) {
+				<p class="feedback">Cargando tus vacantes...</p>
+			} @else if (listError()) {
+				<p class="feedback error-message" role="alert">{{ listError() }}</p>
+			} @else if (jobs().length === 0) {
+				<p class="feedback">Todavía no has creado vacantes.</p>
+			} @else {
+				<div class="vacancy-list">
+					@for (job of jobs(); track job.id) {
+						<article class="vacancy-row">
+							<div class="vacancy-main">
+								<div><h3>{{ job.title }}</h3><p>{{ job.company_name }} · {{ job.location }}</p></div>
+								<span class="status-label" [class.is-draft]="job.status === 'draft'" [class.is-closed]="job.status === 'closed'">{{ job.status === 'published' ? 'Publicada' : job.status === 'draft' ? 'Borrador' : 'Cerrada' }}</span>
+							</div>
+							<p class="vacancy-description">{{ job.description }}</p>
+							<footer><span>{{ job.work_mode === 'remote' ? 'Remoto' : job.work_mode === 'hybrid' ? 'Híbrido' : 'Presencial' }}</span><span>{{ job.applications_count ?? 0 }} postulaciones</span></footer>
+							<div class="vacancy-actions">
+								<button type="button" class="edit-button" [disabled]="isSubmitting() || isDeleting(job.id)" (click)="startEditing(job)">Editar</button>
+								@if (pendingDeleteId() === job.id) {
+									<div class="delete-confirmation" role="group" aria-label="Confirmar eliminación de vacante">
+										<p>¿Eliminar esta vacante? También se eliminarán {{ job.applications_count ?? 0 }} postulaciones.</p>
+										<button type="button" class="delete-button" [disabled]="isDeleting(job.id)" (click)="confirmDelete(job)">{{ isDeleting(job.id) ? 'Eliminando...' : 'Confirmar eliminación' }}</button>
+										<button type="button" class="cancel-button" [disabled]="isDeleting(job.id)" (click)="cancelDelete()">Cancelar</button>
+									</div>
+								} @else {
+									<button type="button" class="delete-button" [disabled]="isSubmitting() || isDeleting(job.id)" (click)="requestDelete(job.id)">Eliminar</button>
+								}
+							</div>
+						</article>
+					}
+				</div>
+			}
+		</section>
+	</div>
+</main>

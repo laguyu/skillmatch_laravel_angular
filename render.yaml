@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: skillmatch-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
+    preDeployCommand: php artisan migrate --force && php artisan config:cache
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        sync: false

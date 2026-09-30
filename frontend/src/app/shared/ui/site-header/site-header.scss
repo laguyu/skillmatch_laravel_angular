@@ -1,0 +1,12 @@
+ .site-header { align-items: center; background: #fff; border-bottom: 1px solid #e5e7f0; display: flex; gap: 1.5rem; justify-content: space-between; min-height: 4.5rem; padding: .75rem max(1.25rem, calc((100% - 70rem) / 2)); position: relative; }
+.brand { color: #343cff; font-size: 1.2rem; font-weight: 800; text-decoration: none; }
+nav { align-items: center; display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: flex-end; }
+nav a { color: #596176; font-size: .9rem; text-decoration: none; }
+nav a.is-active { color: #343cff; font-weight: 700; }
+.user-name { color: #1d2433; font-size: .88rem; }
+.register-link { background: #343cff; border-radius: .55rem; color: #fff !important; font-weight: 700; padding: .65rem .9rem; }
+.logout-button { background: transparent; border: 1px solid #d8dbea; border-radius: .55rem; color: #343cff; cursor: pointer; font: inherit; font-size: .88rem; padding: .55rem .75rem; }
+.logout-button:disabled { cursor: wait; opacity: .6; }
+.logout-error { color: #bb2545; font-size: .8rem; position: absolute; right: 1.25rem; top: 100%; }
+
+@media (max-width: 40rem) { .site-header { align-items: flex-start; flex-direction: column; gap: .75rem; } nav { gap: .75rem; justify-content: flex-start; } .user-name { display: none; } }

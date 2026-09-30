@@ -1,0 +1,41 @@
+.my-jobs-page { background: #f7f8fc; min-height: calc(100vh - 4.5rem); padding: 3.5rem max(1.25rem, calc((100% - 72rem) / 2)); }
+.page-heading { margin-bottom: 2rem; }
+.eyebrow { color: #777ffa; font-size: .75rem; font-weight: 700; letter-spacing: .1em; margin: 0 0 .5rem; text-transform: uppercase; }
+h1 { color: #1d2433; font-size: 2.5rem; margin: 0; }
+.page-heading > div > p:last-child { color: #687087; margin-bottom: 0; }
+.management-layout { align-items: start; display: grid; gap: 3rem; grid-template-columns: minmax(18rem, .8fr) minmax(0, 1.2fr); }
+.publish-section, .owned-jobs-section { min-width: 0; }
+h2 { color: #1d2433; font-size: 1.35rem; margin: 0 0 1.25rem; }
+form { display: grid; gap: .55rem; }
+label { color: #32394c; font-size: .88rem; font-weight: 650; margin-top: .6rem; }
+label span { color: #687087; font-weight: 400; }
+input, select, textarea { background: #fff; border: 1px solid #d8dbea; border-radius: .55rem; color: #1d2433; font: inherit; min-width: 0; padding: .7rem .8rem; width: 100%; }
+textarea { resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: #343cff; outline: 2px solid #343cff33; }
+small, .error-message { color: #bb2545; font-size: .83rem; }
+.success-message { color: #26724c; font-size: .88rem; }
+.field-pair { display: grid; gap: .8rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.form-actions, .vacancy-actions { align-items: center; display: flex; flex-wrap: wrap; gap: .65rem; }
+.publish-button { background: #343cff; border: 0; border-radius: .55rem; color: #fff; cursor: pointer; font: inherit; font-weight: 700; margin-top: .8rem; padding: .8rem 1rem; }
+.publish-button:disabled { cursor: wait; opacity: .6; }
+.cancel-button, .edit-button, .delete-button { background: #fff; border: 1px solid #d8dbea; border-radius: .55rem; color: #343cff; cursor: pointer; font: inherit; font-size: .86rem; font-weight: 650; padding: .58rem .8rem; }
+.delete-button { border-color: #e5bdc5; color: #a3203b; }
+.cancel-button:disabled, .edit-button:disabled, .delete-button:disabled { cursor: wait; opacity: .6; }
+.list-heading { align-items: end; border-bottom: 1px solid #dfe2ed; display: flex; justify-content: space-between; margin-bottom: .25rem; padding-bottom: 1rem; }
+.list-heading h2 { margin: 0; }
+.list-heading > span { color: #687087; font-size: .9rem; }
+.feedback { color: #687087; padding: 1.5rem 0; }
+.vacancy-row { border-bottom: 1px solid #e1e4ed; padding: 1.2rem 0; }
+.vacancy-main { align-items: start; display: flex; gap: 1rem; justify-content: space-between; }
+.vacancy-main h3 { color: #1d2433; font-size: 1.05rem; margin: 0 0 .3rem; }
+.vacancy-main p, .vacancy-description { color: #687087; font-size: .9rem; margin: 0; }
+.vacancy-description { line-height: 1.5; margin-top: .85rem; overflow-wrap: anywhere; white-space: pre-line; }
+.vacancy-row footer { color: #596176; display: flex; flex-wrap: wrap; font-size: .82rem; gap: 1rem; justify-content: space-between; margin-top: 1rem; }
+.vacancy-actions { border-top: 1px solid #eef0f5; margin-top: .9rem; padding-top: .9rem; }
+.delete-confirmation { align-items: center; background: #fff8f8; border: 1px solid #f0cbd2; border-radius: .65rem; display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: .65rem; padding: .8rem; }
+.delete-confirmation p { color: #8e2439; flex-basis: 100%; font-size: .85rem; margin: 0; }
+.status-label { background: #e8f6ee; border-radius: 999px; color: #26724c; flex: 0 0 auto; font-size: .74rem; font-weight: 700; padding: .35rem .6rem; }
+.status-label.is-draft { background: #fff4dc; color: #855b00; }
+.status-label.is-closed { background: #fce9ed; color: #a3203b; }
+
+@media (max-width: 54rem) { .management-layout { grid-template-columns: 1fr; gap: 2.5rem; } }

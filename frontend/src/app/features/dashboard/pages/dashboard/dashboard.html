@@ -1,0 +1,12 @@
+<main class="dashboard">
+	<a routerLink="/" class="brand">SkillMatch</a>
+	<p class="eyebrow">Panel personal</p>
+	<h1>Hola, {{ authSession.user()?.name }}</h1>
+	@if (authSession.user()?.role === 'recruiter') {
+		<p>Publica vacantes y revisa las candidaturas de tu equipo.</p>
+		<a routerLink="/mis-vacantes" class="button">Gestionar mis vacantes</a>
+	} @else {
+		<p>Explora oportunidades y sigue el avance de tus candidaturas.</p>
+		<a routerLink="/" class="button">Ver vacantes</a>
+	}
+</main>

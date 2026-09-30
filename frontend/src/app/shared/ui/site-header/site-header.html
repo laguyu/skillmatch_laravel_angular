@@ -1,0 +1,22 @@
+<header class="site-header">
+	<a class="brand" routerLink="/" aria-label="SkillMatch, inicio">SkillMatch</a>
+	<nav aria-label="Navegación principal">
+		<a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Vacantes</a>
+		@if (authSession.isAuthenticated()) {
+			<a routerLink="/dashboard" routerLinkActive="is-active">Mi panel</a>
+			@if (authSession.user()?.role === 'recruiter') {
+				<a routerLink="/mis-vacantes" routerLinkActive="is-active">Mis vacantes</a>
+			}
+			<span class="user-name">{{ authSession.user()?.name }}</span>
+			<button type="button" class="logout-button" [disabled]="isLoggingOut()" (click)="logout()">
+				{{ isLoggingOut() ? 'Cerrando...' : 'Cerrar sesión' }}
+			</button>
+		} @else {
+			<a routerLink="/login" routerLinkActive="is-active">Iniciar sesión</a>
+			<a class="register-link" routerLink="/registro">Crear cuenta</a>
+		}
+	</nav>
+	@if (errorMessage()) {
+		<p class="logout-error" role="alert">{{ errorMessage() }}</p>
+	}
+</header>

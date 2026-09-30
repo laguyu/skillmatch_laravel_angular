@@ -1,0 +1,65 @@
+<main class="jobs-page">
+	<header class="hero">
+		<a class="brand" routerLink="/">SkillMatch</a>
+		<span class="badge">Tu próximo paso profesional</span>
+		<h1>Encuentra trabajo que encaje contigo.</h1>
+		<p>Vacantes seleccionadas para profesionales que construyen productos digitales.</p>
+	</header>
+
+	<section aria-labelledby="jobs-heading" class="jobs-section">
+		<div class="section-heading">
+			<div>
+				<p class="eyebrow">Oportunidades recientes</p>
+				<h2 id="jobs-heading">Vacantes abiertas</h2>
+			</div>
+			<span class="count">{{ jobs().length }} disponibles</span>
+		</div>
+		@if (applicationHistoryWarning()) {
+			<p class="feedback" role="status">{{ applicationHistoryWarning() }}</p>
+		}
+
+		@if (isLoading()) {
+			<p class="feedback">Cargando oportunidades...</p>
+		} @else if (errorMessage()) {
+			<p class="feedback error" role="alert">{{ errorMessage() }}</p>
+		} @else if (jobs().length === 0) {
+			<p class="feedback">Aún no hay vacantes publicadas.</p>
+		} @else {
+			<div class="job-grid">
+				@for (job of jobs(); track job.id) {
+					<article class="job-card">
+						<div class="job-card__header">
+							<span>{{ job.work_mode }}</span>
+							<time [dateTime]="job.created_at">Reciente</time>
+						</div>
+						<h3>{{ job.title }}</h3>
+						<p class="company">{{ job.company_name }} · {{ job.location }}</p>
+						<p class="description">{{ job.description }}</p>
+						<footer>
+							<span>{{ job.employment_type.replace('_', ' ') }}</span>
+							<strong>{{ job.salary_min ? '$' + job.salary_min.toLocaleString() : 'Salario a convenir' }}</strong>
+						</footer>
+						<div class="job-card__actions">
+							@if (!authSession.isAuthenticated()) {
+								<a routerLink="/login" class="apply-link">Inicia sesión para postularte</a>
+							} @else if (authSession.user()?.role === 'candidate') {
+								@if (hasApplied(job.id)) {
+									<span class="applied-label">Ya te postulaste</span>
+								} @else {
+									<button type="button" class="apply-button" [disabled]="isApplying(job.id)" (click)="applyToJob(job)">
+										{{ isApplying(job.id) ? 'Enviando...' : 'Postularme' }}
+									</button>
+								}
+							} @else {
+								<span class="applied-label">Postulación disponible para candidatos</span>
+							}
+							@if (applicationMessage(job.id)) {
+								<p class="application-message" role="status">{{ applicationMessage(job.id) }}</p>
+							}
+						</div>
+					</article>
+				}
+			</div>
+		}
+	</section>
+</main>
